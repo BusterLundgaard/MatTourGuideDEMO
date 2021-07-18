@@ -540,233 +540,182 @@
 
         class AnswerBox extends HTMLElement {
 
-        constructor() {
-            super();
-
-            //Define attributes
-            const content = this.getAttribute('content');
-            
-            const boxType = this.getAttribute("t");
-            const hintNumber = this.getAttribute("n");
-            const optionalQuestionNumber = this.getAttribute("questionNumber");
-            
-            const tabColour = this.getAttribute("tabColour");
-            const bodyColour = this.getAttribute("bodyColour");
-            const hasTopMargin = this.getAttribute("margin");
-            
-            var customWidth = this.getAttribute("customWidth");
-            if(customWidth == null) {customWidth = "500";}
-            var contentHeight = parseInt(this.getAttribute('h'));
-
-            if(content != null) {
-
-                //Set up shadow
-                var shadow = this.attachShadow({mode: 'open'});
-
-                //Define elements
-                var tab = document.createElement("div");
-                var contentBackground = document.createElement("div");    
-                var contentHolder = document.createElement("div");
-                contentHolder.setAttribute("id","holder");
-                var Masker = document.createElement("div");
-                var DropdownButton = document.createElement("img");
-                DropdownButton.src = "Assets/GUI/DropDown.png";
-                
-                const style = document.createElement('style');
-                style.textContent = QuestionAnswerCSS;
-
-                //Create title
-                var BoxTitle = document.createElement("p");
-                var BoxTitleString = "";
-
-                if(boxType == null){
-                    BoxTitleString = "Answer " 
-                }
-                else if(boxType == "h") {
-                    BoxTitleString = "Hint ";
-                    if(hintNumber != null){
-                        BoxTitleString = BoxTitleString + "#" + hintNumber;
-                    }
-                }
-                else if (boxType == "t") {
-                    BoxTitleString = "Trin #" + hintNumber; 
-                }
-                else if(boxType == "q") {
-                    BoxTitleString = "Spørgsmål " + optionalQuestionNumber;
-                } 
-                else {BoxTitleString=boxType;}
-
-                BoxTitle.innerHTML = "<b>" + BoxTitleString + "</b>";
-                BoxTitle.style = "position: relative; top: -40px; left: 30px; font-family: 'myFirstFont' ; font-size: 20px; color:black"
-
-                //Style elements
-                    //Styling changes based on user defined properties:
-                        //Answer or hint?
-                        var TabC; var BodyC;
-                        if(boxType == "h") {
-                            TabC = "rgb(192,209,132)"; BodyC="rgb(211, 219, 179)";
-                        }
-                        else if (boxType == "t") {
-                            TabC = "rgb(129, 168, 70)"; BodyC="rgb(211, 219, 179)";
-                        }
-                        else if(boxType == "q") {
-                            TabC = "rgb(78, 230, 222);"; BodyC="rgb(113, 187, 183)";
-                        } 
-                        else if(tabColour != null || bodyColour != null) {
-                            if(tabColour != null) {TabC = tabColour;}
-                            else {TabC="rgb(175,128,161)";}
-
-                            if(bodyColour != null) {BodyC = bodyColour;}
-                            else {BodyC = "rgb(211, 219, 179)"}
-                        }
-                        else{
-                            TabC = "rgb(175,128,161)"; BodyC="rgb(211, 219, 179)";
-                        }
-                        
-                        tab.style = "width: " + customWidth + "px;" +
-                                    "margin-left: " + (0.5*(500 - customWidth)).toString() + "px;" +
-                                    "background-color:" + TabC;
-                        tab.style.height = "30px";
-                        
-                        //Top margin or not?
-                        if(hasTopMargin != null) {tab.style = "width: " + customWidth + "px;" + 
-                                                            "margin-left: " + (0.5*(500 - customWidth)).toString() + "px;" +
-                                                            "margin-top: 16px;" +
-                                                            "background-color: rgb(192, 209, 132);";}
-                    //Content:
-                        //Style contentHolder
-                        contentHolder.innerHTML = JaxToCustomElementContent(content); //MAYBE REMOVE THIS FILTER
-                        contentHolder.style = "width: " + (parseInt(customWidth) - 20).toString() + "px; position: relative; top: 10px; margin-left: 10px;";
-
-                        //Set the height
-                        contentHolder.style.height = ((contentHeight)*0.01).toString() + "px";
-                        contentBackground.style.height = ((contentHeight)*0.01).toString() + "px";
-                        
-                        //Style contentBackground
-                        contentBackground.style = "width: " + customWidth + "px;" +
-                                                "margin-left: " + (0.5*(500 - customWidth) ).toString() + "px;" +
-                                                "background-color: " + BodyC;
-                    
-                    //Dropdown:
-                    DropdownButton.style = "width: 20px; height:20px;" + 
-                                            "position: relative;" + 
-                                            "left: 5px; top: 5px;";
-
-                //Add childs to parents:
-                tab.appendChild(DropdownButton);
-                tab.appendChild(BoxTitle);
-                contentBackground.appendChild(contentHolder);
-
-                //Handle mask
-                Masker.appendChild(contentBackground);
-                Masker.style = "width: " + customWidth.toString() + "px; " +
-                                "height: " + (0).toString() + "px; " +
-                                "-webkit-clip-path: inset(0 0 " + (0).toString() + "% 0);";          
-
-                //Handle animation:
-                var animT = 0;
-                var amountToMoveDown;
-                var MaskerHeight = 0; var clipPercentage = 100;
-                var isDisplayed = false;
-                var currentlyMoving = false;
-
-                DropdownButton.addEventListener("click", function() {
-                    if(isDisplayed) {
-                        Masker.style = "height: 0px; " +
-                                    "-webkit-clip-path: inset(0 0 100% 0);" + 
-                                    "width: " + customWidth.toString() + "px; ";
-                        isDisplayed=false;
-                    }
-                    else {
-                        Masker.style = "height: " + (contentHeight + 20).toString() + "px; " +
-                                    "-webkit-clip-path: inset(0, 0, 0, 0);" + 
-                                    "width: " + customWidth.toString() + "px; ";
-                        isDisplayed=true;
-                    }
-                })
-
-            
-                //Add to DOM:
-                shadow.appendChild(style);
-                shadow.appendChild(tab); shadow.appendChild(Masker); 
-                }
-            }
-        }
-        customElements.define('answer-box', AnswerBox);
-
-        class Pictures extends HTMLElement {
             constructor() {
                 super();
 
                 //Define attributes
-                const gridInfo = this.getAttribute('gi').split(",");
-                const sources = this.getAttribute('src').split(",");
-                const descriptions = this.getAttribute('dscr').split("|") 
-
-                //Prepare variables
-                var rowIndex = 0; var columnIndex = 0; var realNewRowIndex = 0;
-                var PictureDescriptionPairs = [];
-                var rowLength = 0; var rowFlexBox;
-
-                var shadow = this.attachShadow({mode: 'open'});
-
-                //Create elements
-                for(let i = 0; i < sources.length; i++) {
+                const content = this.getAttribute('content');
                 
-                    var tmpImg = document.createElement("img"); tmpImg.setAttribute("src",sources[i]);
-                    tmpImg.onload = function() {
-                        
-                        if(columnIndex==0){
-                            rowFlexBox = document.createElement('div');
-                            rowFlexBox.style.display="flex";
-                            rowFlexBox.style.flexDirection="row";
-                        }
+                const boxType = this.getAttribute("t");
+                const hintNumber = this.getAttribute("n");
+                const optionalQuestionNumber = this.getAttribute("questionNumber");
+                
+                const tabColour = this.getAttribute("tabColour");
+                const bodyColour = this.getAttribute("bodyColour");
+                const hasTopMargin = this.getAttribute("margin");
+                
+                var customWidth = this.getAttribute("customWidth");
 
-                        //Create the elements to be put in this row's flexbox
-                        var picture = document.createElement('span'); 
-                        picture.style.width = this.naturalWidth + "px";
-                        picture.appendChild(this);
+                if(content != null) {
 
-                        var DescripDiv = document.createElement('div');
-                            DescripDiv.style.wordWrap = "break-word";
-                            DescripDiv.style.width = this.naturalWidth + "px";
-                        var descripParagraph = document.createElement("p");               
-                            descripParagraph.innerHTML = descriptions[realNewRowIndex + columnIndex];
-                            descripParagraph.style = "text-align: center;"
-                        DescripDiv.appendChild(descripParagraph);
-                        
-                        var FullDiv = document.createElement("div");
-                        FullDiv.appendChild(picture);
-                        FullDiv.appendChild(DescripDiv);
-                        FullDiv.style.width = this.naturalWidth + "px"
+                    //Set up shadow and style:
+                    var shadow = this.attachShadow({mode: 'open'});
 
-                        //Crete this row's flexbox
-                        rowFlexBox.appendChild(FullDiv);
+                    const style = document.createElement('style');
+                    style.textContent = QuestionAnswerCSS;
 
-                        rowLength += this.naturalWidth + 20;
-                        columnIndex++;
+                    var width = (customWidth == null) ? "500" : customWidth;
 
-                        if(columnIndex == gridInfo[rowIndex]) { 
-                            
-                            rowFlexBox.style.justifyContent="space-between"
-                            rowFlexBox.style.marginLeft = ((500 - rowLength)/2).toString() + "px";
 
-                            shadow.appendChild(rowFlexBox);
+                    //Create title
+                    var BoxTitle = document.createElement("p");
+                    var BoxTitleString = "";
 
-                            columnIndex = 0; realNewRowIndex += parseInt(gridInfo[rowIndex]); rowIndex++; 
-                            rowLength = 0;
-
-                            rowFlexBox = document.createElement('div');
-                            rowFlexBox.style.display="flex"; 
-                            rowFlexBox.style.flexDirection="row"; 
-                        }
-
+                    if(boxType == null){
+                        BoxTitleString = "Answer " 
                     }
+                    else if(boxType == "h") {
+                        BoxTitleString = "Hint ";
+                        if(hintNumber != null){
+                            BoxTitleString = BoxTitleString + "#" + hintNumber;
+                        }
+                    }
+                    else if (boxType == "t") {
+                        BoxTitleString = "Trin #" + hintNumber; 
+                    }
+                    else if(boxType == "q") {
+                        BoxTitleString = "Spørgsmål " + optionalQuestionNumber;
+                    } 
+                    else {
+                        BoxTitleString=boxType;
+                    }
+
+                    BoxTitle.innerHTML = "<b>" + BoxTitleString + "</b>";
+                    BoxTitle.style = "position: relative; top: -40px; left: 30px; font-family: 'myFirstFont' ; font-size: 20px; color:black"
+
+
+                    //Create tab:
+                    var tab = document.createElement("div");
+
+                        //Set the colour 
+                    var TabC; 
+                    var BodyC;
+
+                    if(boxType == "h") {
+                        TabC  = "rgb(192,209,132)"; 
+                        BodyC = "rgb(211, 219, 179)";
+                    }
+                    else if (boxType == "t") {
+                        TabC  = "rgb(129, 168, 70)"; 
+                        BodyC = "rgb(211, 219, 179)";
+                    }
+                    else if(boxType == "q") {
+                        TabC  = "rgb(78, 230, 222)"; 
+                        BodyC = "rgb(113, 187, 183)";
+                    } 
+                    else if(tabColour != null || bodyColour != null) {
+                        if(tabColour != null) {TabC = tabColour;}
+                        else {TabC="rgb(175,128,161)";}
+
+                        if(bodyColour != null) {BodyC = bodyColour;}
+                        else {BodyC = "rgb(211, 219, 179)"}
+                    }
+                    else{
+                        TabC = "rgb(175,128,161)"; BodyC="rgb(211, 219, 179)";
+                    } 
+                        //
+
+                        //Set the top margin: 
+                    var topMargin = (hasTopMargin != null) ? "16" : "0";
+                        //
+
+                        //Create the dropdown button:
+                    var DropdownButton = document.createElement("img");
+                    DropdownButton.setAttribute("id", "dropdownButton");
+                    DropdownButton.src = "Assets/GUI/DropDown.png";
+
+                    DropdownButton.style = "width: 20px; height:20px;" + 
+                                            "position: relative;" + 
+                                            "left: 5px; top: 5px;";
+                        //
+
+                    tab.style = "width: " + width + "px;" +
+                                "margin-left: " + (0.5*(500 - width)).toString() + "px;" +
+                                "margin-top: " + topMargin + "px;" +
+                                "background-color:" + TabC;
+                    tab.style.height = "30px";  
+
+                    tab.appendChild(DropdownButton);
+                    tab.appendChild(BoxTitle);
+
+                    
+                    //Content:
+                    var contentBackground = document.createElement("div");    
+                    var contentHolder = document.createElement("div");
+                    contentHolder.setAttribute("id","holder");
+
+                    contentHolder.innerHTML = content; 
+                    
+                    contentHolder.style = "width: " + (parseInt(width) - 20).toString() + "px;" +
+                                        "position: relative;" + 
+                                        "top: 10px;" + 
+                                        "margin-left: 10px;";
+
+                    contentBackground.style = "width: " + width + "px;" +
+                                            "margin-left: " + (0.5*(500 - width) ).toString() + "px;" +
+                                            "background-color: " + BodyC;
+
+                    contentBackground.appendChild(contentHolder);
+                    
+
+                    //Add content to mask: 
+                    var Masker = document.createElement("div");
+                    Masker.setAttribute("id", "masker"); 
+
+                    Masker.appendChild(contentBackground);
+                    
+                    Masker.style = "width: " + width.toString() + "px; " +
+                                    "height: " + (0).toString() + "px; " +
+                                    "-webkit-clip-path: inset(0 0 " + (0).toString() + "% 0);";          
+
+                    //Add to shadow-dom:
+                    shadow.appendChild(style);
+                    shadow.appendChild(tab); 
+                    shadow.appendChild(Masker); 
                 }
-            
             }
-        } 
-        customElements.define('pic-s', Pictures);
+
+            connectedCallback() { //Only runs after the element is initialized and loaded into a document
+
+                //Handle masking/button-functionality: 
+                var shadow = this.shadowRoot;
+                
+                var customWidth = this.getAttribute("customWidth");
+                var width = (customWidth == null) ? "500" : customWidth;
+                
+                var isDisplayed = false;
+                shadow.getElementById("dropdownButton").addEventListener("click", function() {
+
+                    if(isDisplayed) {
+                        shadow.getElementById("masker").style = "height: 0px; " +
+                                    "-webkit-clip-path: inset(0 0 100% 0);" + 
+                                    "width: " + width.toString() + "px; ";
+                        isDisplayed=false;
+                    }
+                    else {
+                        shadow.getElementById("masker").style = "height: " + (shadow.getElementById("holder").clientHeight).toString() + "px; " +
+                                    "-webkit-clip-path: inset(0, 0, 0, 0);" + 
+                                    "width: " + width.toString() + "px; ";
+                        isDisplayed=true;
+                    }
+
+                })
+
+            }
+            }
+
+            customElements.define('answer-box', AnswerBox);
+
     
         class PrimitiveMath extends HTMLElement {
             constructor() { 
