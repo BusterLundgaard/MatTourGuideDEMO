@@ -1,0 +1,193 @@
+*{padding:0;margin:0;border:0;}
+
+body{
+    background-color: rgb(230, 255, 253); 
+    line-height: 23px;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 5px;
+}
+table#table1 td { padding:10px; border:none; }
+table#table2 td { padding:10px; border:solid; white-space: nowrap; }
+
+mjx-container[display="block"] {
+    display: block;
+    margin: 200em 0;
+}
+
+
+@font-face {
+    font-family: myFirstFont;
+    src: url(Fonts/Serif/cmunrm.woff);
+}
+@font-face {
+    font-family: myFirstFont;
+    src: url(Fonts/Serif/cmunbx.woff);
+    font-weight: bold;
+}
+@font-face {
+    font-family: myFirstFont;
+    src: url(Fonts/Serif/cmunti.woff);
+    font-style:italic
+}
+@font-face {
+    font-family: myFirstFont;
+    src: url(Fonts/Serif/cmunbi.woff);
+    font-weight: bold;
+    font-style:italic
+}
+
+#master{
+    font-family:'myFirstFont';
+    font-size: 15px;
+    width:500px;
+    margin-left:calc(50% - 250px);
+    margin-top:30px; margin-bottom:0px;
+    padding: 0; 
+}
+
+.t{
+    font-family:'myFirstFont';
+    font-size: 15px;
+    line-height: 23px;
+
+    word-wrap: break-word;
+    margin-top:12px; margin-bottom:0px;
+
+    padding: 0; 
+    text-align:justify;
+}
+
+.tt{
+    font-family:'myFirstFont';
+    line-height: 23px;
+
+    word-wrap: break-word;
+    margin-top:25px; margin-bottom:0px;
+
+    padding: 0; 
+    text-align:justify;
+}
+
+li{
+    margin-top: 5px;
+}
+
+#leftButton {width:100%; height: 5%; position: absolute; top: 0; bottom: 0; left: 0; right: 0; user-select: none;}
+#leftButtonWrapper {position: fixed; top:calc(50% - 100vw*0.0475); left:1%; width:5%; height: 0px; padding-bottom: 190%;}
+#rightButton {width:5%; height: 5%; position: absolute; top: 0; bottom: 0; left: 0; right: 0; user-select: none;}
+#rightButtonWrapper {position: fixed; top:calc(50% - 100vw*0.0475); left:94%; width:100%; padding-bottom: 190%;}
+
+.cent{
+    margin-top:12px; margin-bottom:0px;
+    padding: 0; 
+    text-align:center;
+    margin-left:auto;
+}
+
+.unity{
+    margin-top:15px;
+    margin-bottom:0px;
+    position:relative;
+    left:-45%;
+    border:solid;
+}
+.unitySmall{
+    position:relative; 
+    right:25%; 
+    width:600px; 
+    height:375px; 
+    margin-top:20px; 
+    border:solid
+}
+
+.pic {
+    width: 500px;
+    margin-top:15px;
+    margin-bottom:0px;
+}
+.picB {
+    width: 500px;
+    margin-top:15px;
+    margin-bottom:0px;
+    border:solid;
+}
+.Spic {
+    margin-top:15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.SpicB {
+    margin-top:15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border:solid;
+}
+.SpicT {
+    margin-top:25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.SpicBT {
+    margin-top:25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border:solid;
+}
+
+
+.Definition {
+    background-color: rgb(231, 200, 200); 
+    padding:10px; 
+    margin-top: 25px; 
+    width:90%; 
+    margin-left:2.5%;
+}
+.Theory {
+    background-color: rgb(161, 174, 230); 
+    padding:10px; 
+    margin-top: 25px; 
+    width:90%; 
+    margin-left:2.5%;
+}
+.Lemma {
+    background-color:rgb(200, 207, 238);
+    padding:10px; 
+    margin-top: 25px; 
+    width:90%; 
+    margin-left:2.5%;
+}
+.Corollary {
+    background-color:rgb(143, 161, 231);
+    padding:10px; 
+    margin-top: 25px; 
+    width:90%; 
+    margin-left:2.5%;
+}
+.Axiom {
+    background-color:rgb(102, 173,142);
+    padding:10px; 
+    margin-top: 25px; 
+    width:90%; 
+    margin-left:2.5%;
+}
+.Proof {
+    margin-top: 25px; 
+    width:98%; 
+    border-left: solid;
+    border-width: 1.5px; 
+    padding-top:0%; 
+    padding-bottom:0%; 
+    padding-left:2%;
+}
+
+
+
+
+        

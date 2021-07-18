@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/polymer/0.3.3/platform.js"></script> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></!--> 
+    <script src="libraries/math-tex-master/math-tex.js"></script>
+    <script src="libraries/math-tex-master/math-tex-controller.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="BrowserCSS.css">
+    <link rel="stylesheet" href="Fonts/Serif/cmun-serif.css">
+
+</head>
+<body>
+
+    <div id="documentLoader"></div>
+
+    <div id="leftButtonWrapper">
+        <img id="leftButton" src="Assets/GUI/PageLeft.png" alt="no pic"> </img>
+    </div>
+    <div id="rightButtonWrapper">
+        <img id="rightButton" src="Assets/GUI/PageRight.png" alt="no pic"> </img>
+    </div>
+
+    <div id="scrollBar"></div> 
+    <div id="scrollControlBar"></div> 
+
+    <div id="master">
+        <div id="documentContainer"></div>
+    </div>
+
+    <br><br><br><br><br>
+
+    <script type="module">
+
+        //import {insertBoxContent, HtmlToContent, processMath, customMathJaxFilter} from '/Modules/pageProcessing.js';
+        
+        import {QuestionStart} from '/Modules/CustomElements/Question.js';
+        import {AnswerBox} from '/Modules/CustomElements/Answer.js';
+        import {HoverVideo} from '/Modules/CustomElements/Hovervideo.js';
+        import {PrimitiveMath} from '/Modules/CustomElements/Primitivemath.js';
+
+        //Hvis du får problemer med CustomElements så er det her måske brugbart: https://stackoverflow.com/questions/55080103/how-to-separate-web-components-to-individual-files-and-load-them
+
+        //CHOSE A PAGE:
+        //var chapterPrefix = "/Chapters/1Arithemetic/TalopgaverOgIntuition/";
+        //var chapterPrefix = "/Talsystemmer/";
+        //var chapterPrefix = "/Chapters/1Arithemetic/Talsystemmer/"
+        //var chapterPrefix = "/Chapters/New1/New1One/";
+        //var chapterPrefix = "/Chapters/1Arithemetic/DivisionAndFactors/";
+        //var chapterPrefix = "/Chapters/2Geoalgebra/BasicTrig/"
+        //var chapterPrefix = "/Chapters/2Geoalgebra/FormsAndDefinitions/";
+        //var chapterPrefix = "/Chapters/2Geoalgebra/EquationsRelations/"
+        //var chapterPrefix = "/Chapters/2Geoalgebra/DescribingSpace/";
+        //var chapterPrefix = "/Chapters/2Geoalgebra/GeogebraAndCAS/"
+        //var chapterPrefix = "/Chapters/2Geoalgebra/Regression/"
+        //var chapterPrefix = "/Chapters/3DiscreteMath/Probability/Revision/";
+        //var chapterPrefix = "/Chapters/4CalculusAndMore/DerivativesAndIntegration/"
+        var chapterPrefix = "/Chapters/4CalculusAndMore/InfinityAndBeyond/"
+        //var chapterPrefix = "/Chapters/4CalculusAndMore/MultivarCalc/"
+        //var chapterPrefix = "/Chapters/4CalculusAndMore/ComplexNumbers/"
+        //var chapterPrefix = "/Chapters/4CalculusAndMore/KontinuerligProb/"
+        var startingPage = 2; 
+        
+
+        //SETUP BROWSER AND CONTROLS:
+        var pageDisplayer = document.createElement("p");
+        pageDisplayer.style = "position:fixed; bottom: 1%; left: 1%;"
+        document.body.appendChild(pageDisplayer);
+
+        //Set styles of scroll controls:
+        document.getElementById("scrollBar").style = "" +
+            "position: fixed;" + 
+            "bottom: 2%; left: 15%;" + 
+            "width: 70%; height: 2%;" +
+            "background-color: grey; opacity: 0.2;";
+        
+        var scrollControlBarStyle = "" +
+            "position: fixed;" + 
+            "bottom: 2%;" + 
+            "width: 10%; height: 2%;" +
+            "background-color: grey; opacity: 0.2;";
+
+        var scrollControlBarStyleHover = "" +
+            "position: fixed;" + 
+            "bottom: 2%;" + 
+            "width: 10%; height: 2%;" +
+            "background-color: grey; opacity: 0.8;";
+
+        var scrollControlObject = document.getElementById("scrollControlBar");
+        scrollControlObject.style=scrollControlBarStyle;
+        var scrollControlObjectX = scrollControlObject.style.left = (jQuery(window).width()*0.15).toString(); 
+        scrollControlObject.style.left = scrollControlObjectX + "px";
+
+        $("#scrollControlBar").hover(
+            function() {scrollControlObject.style = scrollControlBarStyleHover + "left: " + scrollControlObjectX + "px;";}, 
+            function() {scrollControlObject.style = scrollControlBarStyle + "left: " + scrollControlObjectX + "px;";})
+
+
+        //TEST: LOAD IN ONE PAGE
+        var pageData = "";
+        $.get(chapterPrefix + startingPage + ".txt", function(data) {
+            pageData = data.split("$$$");
+            loadPage();
+        })
+
+        const loadPage = function() {
+            const elementCount = pageData.length/3;
+            for(let i = 0; i < elementCount; i++) {
+
+                //console.log(processMath(pageData[i*3+2]));
+                var newElement = document.createElement("div");
+    
+                var elementType = pageData[i*3+0];
+                var elementLength = pageData[i*3+1];
+                var elementContent = processMath(pageData[i*3+2]);
+
+                if(elementType == "q-stion" || elementType == "answer-box") {
+                    elementContent = insertBoxContent(elementContent, elementType);
+                }
+            
+                newElement.innerHTML = elementContent;
+                document.getElementById("documentContainer").appendChild(newElement);
+            }
+        }
+
+        MathJax.Hub.Register.MessageHook("End Typeset", function() {
+            console.log("Hi there!");
+        })
+
+
+        const insertBoxContent = function(str, t) {
+
+            //Set the regEx pattern to get the content between.
+            var myReg = t=="q-stion" ? /(?<=>)(.*)(?=<\/q-stion>)/g : 
+                                    /(?<=>)(.*)(?=<\answer-box>)/g
+
+            var contentStartIndex = str.search(/>/g);
+            var content = myReg.exec(str)[0];
+
+            return s.substring(0, contentStartIndex) +
+                "content=\"" + HtmlToContent(content) + 
+                "\"><" + t + ">";
+        }
+
+        const HtmlToContent = function(str) {
+
+            str.replace("<", "&#60");
+            str.replace(">", "&#62");
+            str.replace('"', "&#34");
+
+            return str; 
+        }
+
+        const processMath = function(str) {
+        
+            str=str.replace(/(?<=\_\()(.*)(?=\_\))/g, (s) => {return customMathJaxFilter(s)})
+
+            str=str.replace(/\_\(\$/g, "<math-tex mode='display'>");
+            str=str.replace(/\_\(/g, "<math-tex>");
+            str=str.replace(/\_\)/g, "</math-tex>");
+
+            return str;
+        }
+
+        const customMathJaxFilter = function(str) {
+
+            //Multiplication:
+            str=str.replace(/\*/g, " \\cdot ");
+
+            //Lines and segments:
+            str=str.replace(/\\Lin/g, "\\overleftrightarrow");
+            str=str.replace(/\\Seg/g, "\\overline");
+            str=str.replace(/\\Ray/g, "\\overrightarrow");
+
+            //Vectors:
+            str=str.replace(/\\Vec\[.*\]/i, (s) => {
+                
+                params = s.substring[5, s.length - 1].split(",");
+                
+                var insideContent = "";
+                for(var i = 0; i < params.length; i++) {
+                    insideContent += params[0];
+                    if(i != params.length - 1){insideContent += "\\\\";}
+                }
+                
+                var matrixType = s.charAt[2]=='C' ? "pmatrix" : "smallmatrix";
+
+                return "\\begin{" + matrixType + "}" + insideContent + "\\end{" + matrixType + "\}";
+
+            });
+            
+            //Derivatives:
+            str=str.replace(/¤./g, (s) => {
+                return "\\frac{d}{d" + s.charAt[1] + "}";
+            });
+
+            return str;
+        }
+
+
+
+    </script>
+
+</body>
+</html>

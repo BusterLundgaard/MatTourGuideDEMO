@@ -1,0 +1,59 @@
+.t{
+    line-height: 23px;
+    font-family:'Times New Roman', Times, serif;
+
+    word-wrap: break-word;
+    margin-top:12px; margin-bottom:0px;
+
+    padding: 0; 
+    text-align:justify;
+}
+
+.cent{
+    margin-top:12px; margin-bottom:0px;
+    padding: 0; 
+    text-align:center;
+    margin-left:auto;
+}
+
+.unity{
+    margin-top:15px;
+    margin-bottom:20px;
+    margin-left:8px;
+    width:480px; 
+    height:300px; 
+    border:solid
+}
+
+.pic {
+    width: 440px;
+    margin-top:15px;
+    margin-left:17px;
+    margin-bottom:7px;
+}
+.picB {
+    width: 440px;
+    margin-top:15px;
+    margin-left:17px;
+    margin-bottom:7px;
+    border:solid;
+}
+.Spic {
+    margin-top:10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.SpicB {
+    margin-top:20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border:solid;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+
